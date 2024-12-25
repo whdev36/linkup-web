@@ -38,7 +38,7 @@ def logout_user(request):
         if request.method == 'POST':
             logout(request)
             msg.info(request, 'You have been logged out successfully.')
-            return redirect('home')
+            return redirect('login')
         return render(request, 'accounts/logout.html', {})
     else:
         msg.warning(request, 'You are not logged in.')
