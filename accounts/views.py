@@ -34,4 +34,12 @@ def login_user(request):
 
 # Logout
 def logout_user(request):
-    return HttpResponse('logout')
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            logout(request)
+            msg.info(request, 'You have been logged out successfully.')
+            return redirect('home')
+        return render(request, 'accounts/logout.html', {})
+    else:
+        msg.warning(request, 'You are not logged in.')
+        return redirect('login')
