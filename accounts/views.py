@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from .forms import RegisterForm
 from django.contrib import messages as msg
 from django.contrib.auth import login, logout, authenticate
+from .models import CustomUser
+from django.template import loader
 
 # Register
 def register_user(request):
@@ -43,3 +45,14 @@ def logout_user(request):
     else:
         msg.warning(request, 'You are not logged in.')
         return redirect('login')
+
+def profile(request):
+    user = CustomUser.objects.get(pk=request.user.pk)
+    template = loader.get_template('accounts/profile.html')
+    return HttpResponse(template.render({'u': user}, request))
+
+def update(request):
+    return HttpResponse('update')
+
+def delete(request):
+    return HttpResponse('delete')

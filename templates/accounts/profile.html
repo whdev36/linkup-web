@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{ u.profile_picture.url }}" class="rounded-circle mb-3 mx-auto d-block" style="width: 60%;">
+            <h2 class="text-center">{{ u.first_name }} {{ u.last_name }}</h2>
+            <p  class="text-justify">A developer from Uzbekistan. Passionate about learning technologies.</p>
+            <button class="btn btn-primary w-100 mb-2">Edit Profile</button>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><i class="bi bi-geo-alt-fill"></i> Uzbekistan</li>
+                <li class="list-group-item"><i class="bi bi-building-fill"></i> Company</li>
+                <li class="list-group-item"><i class="bi bi-envelope-fill"></i> {{ u.email }}</li>
+                <li class="list-group-item"><i class="bi bi-share-fill"></i> Website</li>
+                <li class="list-group-item"><i class="bi bi-instagram"></i> Instagram</li>
+                <li class="list-group-item"><i class="bi bi-telegram"></i> Telegram</li>
+                <li class="list-group-item"><i class="bi bi-facebook"></i> Facebook</li>
+            </ul>
+        </div>
+        <div class="col-md-8">
+            <h3>Posts</h3>
+            <div class="mb-3">
+                <h5>Post 1</h5>
+                <p>This is the content of the first post. More information about the user.</p>
+            </div>
+            <div class="mb-3">
+                <h5>Post 2</h5>
+                <p>This is the second post. Thoughts on programming and technologies.</p>
+            </div>
+            <div class="mb-3">
+                <h5>Post 3</h5>
+                <p>This is the third post. My life and travels.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
