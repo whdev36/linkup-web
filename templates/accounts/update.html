@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Update{% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <form action="#" method="post" enctype="multipart/form-data">
-                <h1 class="mb-5">Register</h1>
+                <h1 class="mb-5">Update</h1>
                 {% csrf_token %}
                 {{ form.as_div }}
-                <button class="btn btn-primary w-100 mb-3" type="submit">Register</button>
-                <p class="text-center">Do you have an account? <a href="{% url 'login' %}">Login</a></p>
+                <button class="btn btn-primary w-100 mb-3" type="submit">Update</button>
             </form>
         </div>
     </div>

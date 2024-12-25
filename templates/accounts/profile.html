@@ -8,7 +8,7 @@
             <img src="{{ u.profile_picture.url }}" class="rounded-circle mb-3 mx-auto d-block" style="width: 60%;">
             <h2 class="text-center">{{ u.first_name }} {{ u.last_name }}</h2>
             <p  class="text-justify">{{ u.bio }}</p>
-            <button class="btn btn-primary w-100 mb-2">Edit Profile</button>
+            <a href="{% url 'update-account' %}" class="btn btn-primary w-100 mb-2">Edit Profile</a>
             <ul class="list-group list-group-flush">
                 <!-- Location -->
                 {% if u.location %}

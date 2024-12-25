@@ -15,12 +15,10 @@ class RegisterForm(UserCreationForm):
         for f_name, f in self.fields.items():
             css_class = 'form-check-input' if f_name == 'is_private' else 'form-control'
             f.widget.attrs['class'] = css_class
-
             f.widget.attrs['placeholder'] = attrs['placeholder'].get(f_name, '')
             f.label = attrs['label'].get(f_name, f_name.capitalize())
             f.label_suffix = ''
             f.help_text = attrs['help_text'].get(f_name, '')
-            f.error_messages = attrs['error_messages'].get(f_name, {})
 
     def as_div(self):
         output = []
@@ -35,9 +33,11 @@ class RegisterForm(UserCreationForm):
 class UpdateUserForm(UserChangeForm):
     class Meta:
         model = CustomUser
-        fields = ['email', 'first_name', 'first_name',
-                'last_name', 'is_private', 'profile_picture', 'location', 'company', 'website_url',
-                'instagram_username', 'telegram_username', 'facebook_username']
+        fields = [
+            'email', 'first_name', 'last_name', 'is_private', 'profile_picture', 'location',
+            'company', 'website_url', 'instagram_username', 'telegram_username', 'facebook_username'
+        ]
+        exclude = ['password']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -45,16 +45,16 @@ class UpdateUserForm(UserChangeForm):
         for f_name, f in self.fields.items():
             css_class = 'form-check-input' if f_name == 'is_private' else 'form-control'
             f.widget.attrs['class'] = css_class
-
             f.widget.attrs['placeholder'] = attrs['placeholder'].get(f_name, '')
             f.label = attrs['label'].get(f_name, f_name.capitalize())
             f.label_suffix = ''
             f.help_text = attrs['help_text'].get(f_name, '')
-            f.error_messages = attrs['error_messages'].get(f_name, {})
 
     def as_div(self):
         output = []
         for f in self:
+            if f.name == 'password':
+                continue
             if f.name == 'is_private':
                 code = f'<div class="form-check mb-3">{f}{f.label_tag()}</div>'
             else:
