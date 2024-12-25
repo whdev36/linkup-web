@@ -5,6 +5,7 @@ from django.contrib import messages as msg
 from django.contrib.auth import login, logout, authenticate
 from .models import CustomUser
 from django.template import loader
+from .forms import UpdateUserForm
 
 # Register
 def register_user(request):

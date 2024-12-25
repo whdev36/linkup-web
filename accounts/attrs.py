@@ -7,6 +7,12 @@ attrs = {
         'bio': 'Add a bio',
         'password1': 'Create password',
         'password2': 'Confirm password',
+        'location': 'Enter your location',
+        'company': 'Enter your company name',
+        'website_url': 'Enter your website URL',
+        'instagram_username': 'Enter your Instagram username',
+        'telegram_username': 'Enter your Telegram username',
+        'facebook_username': 'Enter your Facebook username',
     },
     'label': {
         'email': 'Email',
@@ -18,6 +24,12 @@ attrs = {
         'bio': 'Bio',
         'is_private': 'Private Account',
         'profile_picture': 'Profile Picture',
+        'location': 'Location',
+        'company': 'Company',
+        'website_url': 'Website URL',
+        'instagram_username': 'Instagram Username',
+        'telegram_username': 'Telegram Username',
+        'facebook_username': 'Facebook Username',
     },
     'help_text': {
         'email': 'Please enter a valid email address.',
@@ -26,6 +38,14 @@ attrs = {
         'username': 'Choose a unique username for your account.',
         'password1': 'Your password must be at least 8 characters long.',
         'password2': 'Enter the same password as above for verification.',
+        'profile_picture': 'Upload a square image (e.g., 300x300 pixels) for best results.',
+        'bio': 'Provide a short description about yourself (max 300 characters).',
+        'location': 'Your current city or hometown.',
+        'company': 'The organization you work for.',
+        'website_url': 'Your personal or professional website URL.',
+        'instagram_username': 'Your Instagram username without @.',
+        'telegram_username': 'Your Telegram username without @.',
+        'facebook_username': 'Your Facebook profile URL.',
     },
     'error_messages': {
         'email': {
@@ -43,6 +63,13 @@ attrs = {
         'password2': {
             'required': 'Please confirm your password.',
             'mismatch': 'Passwords do not match.',
+        },
+        'profile_picture': {
+            'invalid': 'Please upload a valid image file.',
+            'max_length': 'The file name is too long.',
+        },
+        'bio': {
+            'max_length': 'Bio cannot exceed 300 characters.',
         },
     }
 }
