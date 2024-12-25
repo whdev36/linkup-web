@@ -26,10 +26,8 @@ class RegisterForm(UserCreationForm):
         output = []
         for f in self:
             if f.name == 'is_private':
-                # Custom situation for `is_private`
                 code = f'<div class="form-check mb-3">{f}{f.label_tag()}</div>'
             else:
-                # Other fields
                 code = f'<div class="mb-3">{f.label_tag()}{f}</div>'
             output.append(code)
         return mark_safe('\n'.join(output))
