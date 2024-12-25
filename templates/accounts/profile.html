@@ -7,16 +7,73 @@
         <div class="col-md-4">
             <img src="{{ u.profile_picture.url }}" class="rounded-circle mb-3 mx-auto d-block" style="width: 60%;">
             <h2 class="text-center">{{ u.first_name }} {{ u.last_name }}</h2>
-            <p  class="text-justify">A developer from Uzbekistan. Passionate about learning technologies.</p>
+            <p  class="text-justify">{{ u.bio }}</p>
             <button class="btn btn-primary w-100 mb-2">Edit Profile</button>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><i class="bi bi-geo-alt-fill"></i> Uzbekistan</li>
-                <li class="list-group-item"><i class="bi bi-building-fill"></i> Company</li>
-                <li class="list-group-item"><i class="bi bi-envelope-fill"></i> {{ u.email }}</li>
-                <li class="list-group-item"><i class="bi bi-share-fill"></i> Website</li>
-                <li class="list-group-item"><i class="bi bi-instagram"></i> Instagram</li>
-                <li class="list-group-item"><i class="bi bi-telegram"></i> Telegram</li>
-                <li class="list-group-item"><i class="bi bi-facebook"></i> Facebook</li>
+                <!-- Location -->
+                {% if u.location %}
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-geo-alt-fill me-2"></i>
+                            {{ u.location }}
+                        </div>
+                    </li>
+                {% endif %}
+                <!-- Company -->
+                {% if u.company %}
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-building-fill me-2"></i>
+                            {{ u.company }}
+                        </div>
+                    </li>
+                {% endif %}
+                <!-- Email -->
+                <li class="list-group-item">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-envelope-fill me-2"></i>
+                        <a class="link-secondary text-decoration-none" href="mailto:{{ u.email }}">{{ u.email }}</a>
+                    </div>
+                </li>
+                <!-- Website -->
+                {% if u.website_url %}
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-globe me-2"></i>
+                            <a class="link-secondary text-decoration-none" href="{{ u.website_url }}" target="_blank">{{ u.website_url }}</a>
+                        </div>
+                    </li>
+                {% endif %}
+                <!-- Instagram -->
+                {% if u.instagram_username %}
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-instagram me-2"></i>
+                            <a class="link-secondary text-decoration-none" href="https://www.instagram.com/{{ u.instagram_username }}"
+                                target="_blank">{{ u.instagram_username }}</a>
+                        </div>
+                    </li>
+                {% endif %}
+                <!-- Telegram -->
+                {% if u.telegram_username %}
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-telegram me-2"></i>
+                            <a class="link-secondary text-decoration-none" href="https://t.me/{{ u.telegram_username }}"
+                                target="_blank">{{ u.telegram_username }}</a>
+                        </div>
+                    </li>
+                {% endif %}
+                <!-- Facebook -->
+                {% if u.facebook_username %}
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-facebook me-2"></i>
+                            <a class="link-secondary text-decoration-none" href="https://www.facebook.com/{{ u.facebook_username }}"
+                                target="_blank">{{ u.facebook_username }}</a>
+                        </div>
+                    </li>
+                {% endif %}
             </ul>
         </div>
         <div class="col-md-8">

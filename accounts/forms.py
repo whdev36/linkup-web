@@ -7,7 +7,7 @@ from django.utils.safestring import mark_safe
 class RegisterForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ['email', 'first_name', 'last_name', 'username', 'password1', 'password2', 'is_private', 'profile_picture']
+        fields = ['email', 'first_name', 'last_name', 'username', 'password1', 'password2', 'bio', 'is_private', 'profile_picture']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

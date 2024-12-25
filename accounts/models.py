@@ -6,9 +6,9 @@ class CustomUser(AbstractUser):
     location = models.CharField(max_length=100, blank=True, null=True)
     company = models.CharField(max_length=100, blank=True, null=True)
     website_url = models.URLField(blank=True, null=True)
-    instagram_url = models.URLField(blank=True, null=True)
-    telegram_url = models.URLField(blank=True, null=True)
-    facebook_urk = models.URLField(blank=True, null=True)
+    instagram_username = models.CharField(max_length=120, blank=True, null=True)
+    telegram_username = models.CharField(max_length=120, blank=True, null=True)
+    facebook_username = models.CharField(max_length=120, blank=True, null=True)
     profile_picture = models.ImageField(upload_to='accounts/pics/', blank=True, null=True)
     is_private = models.BooleanField(default=False)
 
