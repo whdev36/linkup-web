@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <!-- Today's Posts Section -->
+        <div class="col-md-8">
+            <h2>Today's Posts</h2>
+            <div class="card mb-3">
+                <div class="card-header d-flex align-items-center gap-2">
+                    <img src="https://via.placeholder.com/40" alt="Author 1" class="rounded-circle mr-2">
+                    <div>
+                        <strong>John Doe</strong><br>
+                        <span class="text-muted">@johndoe</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Post Title 1</h5>
+                    <p class="card-text">This is a brief description of the post content. It will be truncated to
+                        show the first few lines...</p>
+                    <small class="text-muted">Posted 3 hours ago</small>
+                    <div class="mt-2">
+                        <button class="btn btn-danger btn-sm"><i class="bi bi-heart-fill"></i></button>
+                        <button class="btn btn-secondary btn-sm"><i class="bi bi-chat"></i></button>
+                        <a href="#" class="btn btn-link btn-sm">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header d-flex align-items-center gap-2">
+                    <img src="https://via.placeholder.com/40" alt="Author 2" class="rounded-circle mr-2">
+                    <div>
+                        <strong>Jane Smith</strong><br>
+                        <span class="text-muted">@janesmith</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Post Title 2</h5>
+                    <p class="card-text">Another brief description of the post content. It will also be truncated to
+                        show the first few lines...</p>
+                    <small class="text-muted">Posted 5 hours ago</small>
+                    <div class="mt-2">
+                        <button class="btn btn-danger btn-sm"><i class="bi bi-heart"></i></button>
+                        <button class="btn btn-secondary btn-sm"><i class="bi bi-chat"></i></button>
+                        <a href="#" class="btn btn-link btn-sm">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Pagination -->
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Add Post Form Section -->
+        <div class="col-md-4">
+            <h2>Add a New Post</h2>
+            <form>
+                <div class="form-group mb-3">
+                    <label for="postTitle">Title</label>
+                    <input type="text" class="form-control" id="postTitle" placeholder="Enter post title" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="postContent">Content</label>
+                    <textarea class="form-control" id="postContent" rows="5" placeholder="Enter post content"
+                        required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Post</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
