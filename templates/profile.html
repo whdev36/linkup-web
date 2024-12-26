@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <!-- Profile Section -->
+        <div class="col-md-4 text-center">
+            <img src="https://via.placeholder.com/150" alt="Profile Picture" class="rounded-circle mb-3">
+            <h3>John Doe</h3>
+            <p class="text-muted">@johndoe</p>
+            <p>This is a short bio or description about the user. It gives an overview of the user's interests and
+                background.</p>
+            <a href="#" class="btn btn-outline-primary">Edit Profile</a>
+        </div>
+
+        <!-- User's Posts Section -->
+        <div class="col-md-8">
+            <h2>User's Posts</h2>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Post Title 1</h5>
+                    <p class="card-text">This is a brief description of the post content. It will be truncated to
+                        show the first few lines...</p>
+                    <small class="text-muted">Posted 3 hours ago</small>
+                    <div class="mt-2">
+                        <button class="btn btn-primary btn-sm">Like</button>
+                        <button class="btn btn-secondary btn-sm">Comment</button>
+                        <a href="#" class="btn btn-link btn-sm">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Post Title 2</h5>
+                    <p class="card-text">Another brief description of the post content. It will also be truncated to
+                        show the first few lines...</p>
+                    <small class="text-muted">Posted 5 hours ago</small>
+                    <div class="mt-2">
+                        <button class="btn btn-primary btn-sm">Like</button>
+                        <button class="btn btn-secondary btn-sm">Comment</button>
+                        <a href="#" class="btn btn-link btn-sm">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Add Post Form -->
+    <div class="row mt-4">
+        <div class="col-md-8 offset-md-4">
+            <h2>Add a New Post</h2>
+            <form>
+                <div class="form-group">
+                    <label for="postTitle">Title</label>
+                    <input type="text" class="form-control" id="postTitle" placeholder="Enter post title" required>
+                </div>
+                <div class="form-group">
+                    <label for="postContent">Content</label>
+                    <textarea class="form-control" id="postContent" rows="5" placeholder="Enter post content"
+                        required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Post</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
