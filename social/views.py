@@ -11,7 +11,17 @@ def home(request):
 
 # Profile
 def profile(request):
-    return render(request, 'profile.html', {})
+    if request.user.is_authenticated:
+        profile = get_object_or_404(Profile, pk=request.user.pk)
+        return redirect('view-profile', slug=profile.slug)
+    else:
+        m.success(request, 'You are not logged in.')
+        return redirect('login')
+
+# View profile
+def view_profile(request, slug):
+    profile = get_object_or_404(Profile, slug=slug)
+    return render(request, 'profile.html', {'p': profile})
 
 # Register
 def register(request):
