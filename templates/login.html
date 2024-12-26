@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <h2 class="text-center mb-4">Login</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" name="username"
+                        id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="password"
+                        id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <div class="text-center mt-3">
+                <a href="#" class="text-muted">Forgot Password?</a>
+            </div>
+            <div class="text-center mt-2">
+                <a href="#" class="text-muted">Create an Account</a>
+            </div>
+            <small class="d-block text-muted text-center mt-3">Your information will remain private and
+                secure.</small>
+        </div>
+    </div>
+{% endblock %}

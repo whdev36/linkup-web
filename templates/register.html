@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Registration{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <h2 class="text-center mb-4">Register</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_div }}
+                <button type="submit" class="btn btn-primary w-100">Register</button>
+            </form>
+            <small class="d-block text-muted text-center mt-3">Your information will remain private and
+                secure.</small>
+        </div>
+    </div>
+{% endblock %}
