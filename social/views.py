@@ -87,3 +87,7 @@ def update_profile(request):
     else:
         m.warning(request, 'You need to be logged in to update your profile.')
         return redirect('home')
+
+def read_users(request):
+    users = Profile.objects.all()
+    return render(request, 'read-users.html', {'users': users})
