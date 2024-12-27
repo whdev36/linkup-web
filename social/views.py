@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages as m
-from .forms import ProfileCreationForm
+from .forms import ProfileCreationForm, ProfileChangeForm
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from .models import Profile
@@ -70,3 +70,20 @@ def delete_account(request):
     else:
         m.warning(request, 'You need to be logged in to delete your profile.')
         return redirect('login')
+
+def update_profile(request):
+    if request.user.is_authenticated:
+        user = get_object_or_404(Profile, pk=request.user.pk)
+        print(user)
+        if request.method == 'POST':
+            form = ProfileChangeForm(request.POST, request.FILES, instance=user)
+            if form.is_valid():
+                form.save()
+                m.success(request, 'Your profile has been updated successfully.')
+                return redirect('view-profile', slug=user.slug)
+        else:
+            form = ProfileChangeForm(instance=user)
+        return render(request, 'update-profile.html', {'form': form})
+    else:
+        m.warning(request, 'You need to be logged in to update your profile.')
+        return redirect('home')
