@@ -91,3 +91,7 @@ def update_profile(request):
 def read_users(request):
     users = Profile.objects.all()
     return render(request, 'read-users.html', {'users': users})
+
+def read_user(request, slug):
+    user = get_object_or_404(Profile, slug=slug)
+    return render(request, 'read-user.html', {'p': user})

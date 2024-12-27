@@ -22,7 +22,7 @@
                                 class="rounded-circle img-thumbnail mb-2">
                             <h5 class="font-weight-bold">{{ p.first_name }} {{ p.last_name }}</h5>
                             <p class="text-muted">@{{ p.username }}</p>
-                            <a href="#" class="btn btn-primary">View Profile</a>
+                            <a href="{% url 'read-user' p.slug %}" class="btn btn-primary">View Profile</a>
                         </div>
                     </div>
                 {% endfor %}

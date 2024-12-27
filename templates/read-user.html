@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ p.first_name }}'s Profile{% endblock %}
+
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <!-- Profile Section -->
+        <div class="col-md-4 text-center">
+            <img src="{% if p.profile_picture %}{{ p.profile_picture.url }}{% else %}{% static 'default-pic.png' %}{% endif %}" alt="Profile Picture" class="rounded-circle mb-3" style="width: 60%;">
+            <h3>{{ p.first_name }} {{ p.last_name }}</h3>
+            <p class="text-muted">@{{ p.username }}</p>
+            {% if p.bio %}
+                <p>{{ p.bio }}</p>
+            {% endif %}
+            <a href="" class="btn btn-primary">Follow</a>
+            <a href="" class="btn btn-primary">Message</a>
+        </div>
+
+        <!-- User's Posts Section -->
+        <div class="col-md-8">
+            <h2>{{ p.first_name }}'s Posts</h2>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Post Title 1</h5>
+                    <p class="card-text">This is a brief description of the post content. It will be truncated to
+                        show the first few lines...</p>
+                    <small class="text-muted">Posted 3 hours ago</small>
+                    <div class="mt-2">
+                        <button class="btn btn-primary btn-sm">Like</button>
+                        <button class="btn btn-secondary btn-sm">Comment</button>
+                        <a href="#" class="btn btn-link btn-sm">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Post Title 2</h5>
+                    <p class="card-text">Another brief description of the post content. It will also be truncated to
+                        show the first few lines...</p>
+                    <small class="text-muted">Posted 5 hours ago</small>
+                    <div class="mt-2">
+                        <button class="btn btn-primary btn-sm">Like</button>
+                        <button class="btn btn-secondary btn-sm">Comment</button>
+                        <a href="#" class="btn btn-link btn-sm">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
