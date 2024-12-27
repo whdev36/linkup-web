@@ -13,9 +13,21 @@
             <p class="text-muted">@{{ p.username }}</p>
             {% if p.bio %}
                 <p>{{ p.bio }}</p>
+            <p><strong>Follows:</strong> {{ following_count }}</p>
+            <p><strong>Followers:</strong> {{ followers_count }}</p>
             {% endif %}
-            <a href="" class="btn btn-primary">Follow</a>
-            <a href="" class="btn btn-primary">Message</a>
+            {% if user in p.followers.all %}
+                <form method="post" action="{% url 'unfollow' p.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Unfollow</button>
+                </form>
+            {% else %}
+                <form method="post" action="{% url 'follow' p.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Follow</button>
+                </form>
+            {% endif %}
+            <a href="#" class="btn btn-primary">Message</a>
         </div>
 
         <!-- User's Posts Section -->

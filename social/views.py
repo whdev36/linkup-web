@@ -4,6 +4,7 @@ from .forms import ProfileCreationForm, ProfileChangeForm
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from .models import Profile
+from django.contrib.auth.decorators import login_required
 
 # Home
 def home(request):
@@ -21,7 +22,10 @@ def profile(request):
 # View profile
 def view_profile(request, slug):
     profile = get_object_or_404(Profile, slug=slug)
-    return render(request, 'profile.html', {'p': profile})
+    followers_count = profile.followers.count()
+    following_count = profile.follows.count()
+    return render(request, 'profile.html', {'p': profile, 'followers_count': followers_count,
+        'following_count': following_count,})
 
 # Register
 def register(request):
@@ -94,4 +98,19 @@ def read_users(request):
 
 def read_user(request, slug):
     user = get_object_or_404(Profile, slug=slug)
-    return render(request, 'read-user.html', {'p': user})
+    followers_count = user.followers.count()
+    following_count = user.follows.count()
+    return render(request, 'read-user.html', {'p': user, 'followers_count': followers_count,
+        'following_count': following_count,})
+
+@login_required
+def follow_user(request, user_id):
+    user_to_follow = get_object_or_404(Profile, id=user_id)
+    request.user.follows.add(user_to_follow)
+    return redirect('read-user', slug=user_to_follow.username)
+
+@login_required
+def unfollow_user(request, user_id):
+    user_to_unfollow = get_object_or_404(Profile, id=user_id)
+    request.user.follows.remove(user_to_unfollow)
+    return redirect('read-user', slug=user_to_unfollow.username) 
