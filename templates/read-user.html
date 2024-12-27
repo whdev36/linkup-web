@@ -8,14 +8,26 @@
     <div class="row">
         <!-- Profile Section -->
         <div class="col-md-4 text-center">
-            <img src="{% if p.profile_picture %}{{ p.profile_picture.url }}{% else %}{% static 'default-pic.png' %}{% endif %}" alt="Profile Picture" class="rounded-circle mb-3" style="width: 60%;">
+            {% if p.profile_video %}
+                <video autoplay muted loop class="mb-3" style="width: 60%; border-radius: 50%;">
+                    <source src="{{ p.profile_video.url }}">
+                    Your browser does not support the video tag.
+                </video>
+            {% elif p.profile_picture %}
+                <img src="{{ p.profile_picture.url }}" alt="Profile Picture" class="rounded-circle mb-3" style="width: 60%;">
+            {% else %}
+                <img src="{% static 'default-pic.png' %}" alt="Default Profile" class="rounded-circle mb-3" style="width: 60%;">
+            {% endif %}
+            
             <h3>{{ p.first_name }} {{ p.last_name }}</h3>
             <p class="text-muted">@{{ p.username }}</p>
+            
             {% if p.bio %}
                 <p>{{ p.bio }}</p>
-            <p><strong>Follows:</strong> {{ following_count }}</p>
-            <p><strong>Followers:</strong> {{ followers_count }}</p>
+                <p><strong>Follows:</strong> {{ following_count }}</p>
+                <p><strong>Followers:</strong> {{ followers_count }}</p>
             {% endif %}
+            
             {% if user in p.followers.all %}
                 <form method="post" action="{% url 'unfollow' p.id %}">
                     {% csrf_token %}
@@ -27,8 +39,10 @@
                     <button type="submit" class="btn btn-primary">Follow</button>
                 </form>
             {% endif %}
+            
             <a href="#" class="btn btn-primary">Message</a>
         </div>
+        
 
         <!-- User's Posts Section -->
         <div class="col-md-8">

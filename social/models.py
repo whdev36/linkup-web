@@ -8,6 +8,7 @@ class Profile(AbstractUser):
     bio = models.TextField(max_length=300, blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
     follows = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='followers')
+    profile_video = models.FileField(upload_to='profiles/videos/', blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
