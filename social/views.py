@@ -3,8 +3,13 @@ from django.contrib import messages as m
 from .forms import ProfileCreationForm, ProfileChangeForm
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from .models import Profile
+from .models import Profile, Post
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views import View
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Home
 def home(request):
@@ -113,4 +118,54 @@ def follow_user(request, user_id):
 def unfollow_user(request, user_id):
     user_to_unfollow = get_object_or_404(Profile, id=user_id)
     request.user.follows.remove(user_to_unfollow)
-    return redirect('read-user', slug=user_to_unfollow.username) 
+    return redirect('read-user', slug=user_to_unfollow.username)
+
+class PostListView(ListView):
+    model = Post
+    template_name = "post_list.html"
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        return Post.objects.select_related('author').all()
+
+# Post create
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    fields = ['content']
+    template_name = "post_form.html"
+    success_url = reverse_lazy("post_list")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+# Post update
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    fields = ['content', 'image']
+    template_name = "post_form.html"
+    success_url = reverse_lazy("post_list")
+
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user.profile)
+
+# Post delete
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = "post_confirm_delete.html"
+    success_url = reverse_lazy("post_list")
+
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user)
+
+# Like / Unlike
+class PostLikeToggleView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        post = get_object_or_404(Post, id=kwargs.get('pk'))
+        if request.user in post.likes.all():
+            post.likes.remove(request.user)
+            liked = False
+        else:
+            post.likes.add(request.user)
+            liked = True
+        return JsonResponse({"liked": liked, "like_count": post.likes.count()})

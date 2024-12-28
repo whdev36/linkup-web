@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils.safestring import mark_safe
-from .models import Profile
+from .models import Profile, Post
 from .attrs import attrs
 
 class ProfileCreationForm(UserCreationForm):
@@ -50,4 +50,21 @@ class ProfileChangeForm(UserChangeForm):
                 continue
             code = f'<div class="form-group mb-3">{f.label_tag()}{f}</div>'
             o.append(code)
+        return mark_safe('\n'.join(o))
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['author', 'content']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['author'].widget.attrs['class'] = 'form-control'
+        self.fields['content'].widget.attrs['class'] = 'form-control'
+
+    def as_div(self):
+        o = []
+        for f in self:
+            o.append(f'<div class="form-group mb-3">{f.label_tag()}{f}</div>')
         return mark_safe('\n'.join(o))

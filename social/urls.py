@@ -1,5 +1,12 @@
 from django.urls import path
 from . import views
+from .views import (
+    PostListView,
+    PostCreateView,
+    PostUpdateView,
+    PostDeleteView,
+    PostLikeToggleView,
+)
 
 # Using: create, update, read, delete
 urlpatterns = [
@@ -15,4 +22,9 @@ urlpatterns = [
     path('read-user/<slug:slug>/', views.read_user, name='read-user'),
     path('follow/<int:user_id>/', views.follow_user, name='follow'),
     path('unfollow/<int:user_id>/', views.unfollow_user, name='unfollow'),
+    path('posts/', PostListView.as_view(), name="post_list"),
+    path('post/new/', PostCreateView.as_view(), name="post_create"),
+    path('post/<int:pk>/edit/', PostUpdateView.as_view(), name="post_update"),
+    path('post/<int:pk>/delete/', PostDeleteView.as_view(), name="post_delete"),
+    path('post/<int:pk>/like/', PostLikeToggleView.as_view(), name="post_like_toggle"),
 ]

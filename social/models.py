@@ -11,6 +11,19 @@ class Profile(AbstractUser):
     profile_video = models.FileField(upload_to='profiles/videos/', blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = self.username
+        self.slug = self.slug or self.username
         super().save(*args, **kwargs)
+
+class Post(models.Model):
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="posts")
+    content = models.TextField(max_length=500)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    likes = models.ManyToManyField(Profile, related_name="liked_posts", blank=True)
+
+    def __str__(self):
+        return f"{self.author.username}: {self.content[:30]}"
+
+    @property
+    def like_count(self):
+        return self.likes.count()
