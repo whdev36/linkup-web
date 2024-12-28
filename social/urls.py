@@ -29,6 +29,9 @@ urlpatterns = [
     path('posts/<int:pk>/delete/', views.post_delete, name='post_delete'),
     path('posts/<int:pk>/like/', views.post_like_toggle, name='post_like_toggle'),
 
+    path('ch/<int:user_id>/', views.chat, name='ch'),
+    path('ch/<int:user_id>/send/', views.send_message, name='send_message'),
+
     # path('posts/', PostListView.as_view(), name="post_list"),
     # path('post/new/', PostCreateView.as_view(), name="post_create"),
     # path('post/<int:pk>/edit/', PostUpdateView.as_view(), name="post_update"),

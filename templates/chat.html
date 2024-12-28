@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* chat.css */
+    #chat-box {
+        max-height: 400px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+    }
+
+    .message {
+        padding: 10px;
+        margin: 5px;
+        border-radius: 5px;
+    }
+
+    .sent {
+        background-color: #e6f7ff;
+        text-align: right;
+    }
+
+    .received {
+        background-color: #f2f2f2;
+        text-align: left;
+    }
+</style>
+<h2>Chat with {{ user_to_chat.username }}</h2>
+
+<div id="chat-box">
+    {% for message in messages %}
+    <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+        <strong>{{ message.sender.username }}:</strong> {{ message.content }}
+        <small>{{ message.timestamp|timesince }} ago</small>
+    </div>
+    {% endfor %}
+</div>
+
+<form method="POST" id="chat-form">
+    {% csrf_token %}
+    <textarea name="content" id="content" placeholder="Type a message..." required></textarea>
+    <button type="submit">Send</button>
+</form>
+
+<script>
+    document.getElementById("chat-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const content = document.getElementById('content').value;
+        const url = "{% url 'send_message' user_to_chat.id %}";
+
+        fetch(url, {
+            method: 'POST',
+            body: new FormData(this),
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const messageContainer = document.createElement('div');
+                    messageContainer.className = 'message sent';
+                    messageContainer.innerHTML = '<strong>' + data.sender + ':</strong> ' + data.message;
+                    document.getElementById('chat-box').appendChild(messageContainer);
+                    document.getElementById('content').value = '';  // Clear the textarea
+                } else {
+                    alert(data.message);
+                }
+            });
+    });
+</script>
+{% endblock %}

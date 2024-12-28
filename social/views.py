@@ -3,13 +3,14 @@ from django.contrib import messages as m
 from .forms import ProfileCreationForm, ProfileChangeForm
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from .models import Profile, Post
+from .models import Profile, Post, Message
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
 # Home
 def home(request):
@@ -191,3 +192,34 @@ def post_like_toggle(request, pk):
         post.likes.add(request.user)
         liked = True
     return JsonResponse({"liked": liked, "like_count": post.likes.count()})
+
+@login_required
+def chat(request, user_id):
+    # Get the user to chat with
+    user_to_chat = Profile.objects.get(id=user_id)
+    # Get all messages between the current user and the other user
+    messages = Message.objects.filter(
+        (Q(sender=request.user) & Q(receiver=user_to_chat)) | 
+        (Q(sender=user_to_chat) & Q(receiver=request.user))
+    ).order_by('timestamp')
+    
+    return render(request, 'chat.html', {
+        'user_to_chat': user_to_chat,
+        'messages': messages
+    })
+
+@login_required
+def send_message(request, user_id):
+    if request.method == "POST":
+        content = request.POST.get('content')
+        receiver = Profile.objects.get(id=user_id)
+        
+        # Save the message
+        message = Message.objects.create(
+            sender=request.user,
+            receiver=receiver,
+            content=content
+        )
+        
+        return JsonResponse({'status': 'success', 'message': message.content, 'sender': message.sender.username})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'})

@@ -27,3 +27,12 @@ class Post(models.Model):
     @property
     def like_count(self):
         return self.likes.count()
+    
+class Message(models.Model):
+    sender = models.ForeignKey(Profile, related_name='sent_messages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(Profile, related_name='received_messages', on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.sender.username} to {self.receiver.username} at {self.timestamp}"
