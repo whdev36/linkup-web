@@ -13,7 +13,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Home
 def home(request):
-    return render(request, 'home.html', {})
+    posts = Post.objects.select_related('author').all()
+    return render(request, 'home.html', {'posts': posts})
 
 # Profile
 def profile(request):
@@ -120,52 +121,73 @@ def unfollow_user(request, user_id):
     request.user.follows.remove(user_to_unfollow)
     return redirect('read-user', slug=user_to_unfollow.username)
 
-class PostListView(ListView):
-    model = Post
-    template_name = "post_list.html"
-    context_object_name = "posts"
+# Profile
+@login_required
+def profile(request):
+    profile = get_object_or_404(Profile, pk=request.user.pk)
+    return redirect('view-profile', slug=profile.slug)
 
-    def get_queryset(self):
-        return Post.objects.select_related('author').all()
+# View profile
+@login_required
+def view_profile(request, slug):
+    profile = get_object_or_404(Profile, slug=slug)
+    followers_count = profile.followers.count()
+    following_count = profile.follows.count()
+    return render(request, 'profile.html', {
+        'p': profile,
+        'followers_count': followers_count,
+        'following_count': following_count,
+    })
 
-# Post create
-class PostCreateView(LoginRequiredMixin, CreateView):
-    model = Post
-    fields = ['content']
-    template_name = "post_form.html"
-    success_url = reverse_lazy("post_list")
+# Post List
+def post_list(request):
+    posts = Post.objects.select_related('author').all()
+    return render(request, 'post_list.html', {'posts': posts})
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-# Post update
-class PostUpdateView(LoginRequiredMixin, UpdateView):
-    model = Post
-    fields = ['content', 'image']
-    template_name = "post_form.html"
-    success_url = reverse_lazy("post_list")
-
-    def get_queryset(self):
-        return Post.objects.filter(author=self.request.user.profile)
-
-# Post delete
-class PostDeleteView(LoginRequiredMixin, DeleteView):
-    model = Post
-    template_name = "post_confirm_delete.html"
-    success_url = reverse_lazy("post_list")
-
-    def get_queryset(self):
-        return Post.objects.filter(author=self.request.user)
-
-# Like / Unlike
-class PostLikeToggleView(LoginRequiredMixin, View):
-    def post(self, request, *args, **kwargs):
-        post = get_object_or_404(Post, id=kwargs.get('pk'))
-        if request.user in post.likes.all():
-            post.likes.remove(request.user)
-            liked = False
+# Post Create
+@login_required
+def post_create(request):
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        if content:
+            Post.objects.create(author=request.user, content=content)
+            m.success(request, 'Post created successfully.')
+            return redirect('post_list')
         else:
-            post.likes.add(request.user)
-            liked = True
-        return JsonResponse({"liked": liked, "like_count": post.likes.count()})
+            m.error(request, 'Content cannot be empty.')
+    return render(request, 'post_form.html', {})
+
+# Post Update
+@login_required
+def post_update(request, pk):
+    post = get_object_or_404(Post, pk=pk, author=request.user)
+    if request.method == 'POST':
+        post.content = request.POST.get('content', post.content)
+        if 'image' in request.FILES:
+            post.image = request.FILES['image']
+        post.save()
+        m.success(request, 'Post updated successfully.')
+        return redirect('post_list')
+    return render(request, 'post_form.html', {'post': post})
+
+# Post Delete
+@login_required
+def post_delete(request, pk):
+    post = get_object_or_404(Post, pk=pk, author=request.user)
+    if request.method == 'POST':
+        post.delete()
+        m.success(request, 'Post deleted successfully.')
+        return redirect('post_list')
+    return render(request, 'post_confirm_delete.html', {'post': post})
+
+# Like / Unlike Post
+@login_required
+def post_like_toggle(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+        liked = False
+    else:
+        post.likes.add(request.user)
+        liked = True
+    return JsonResponse({"liked": liked, "like_count": post.likes.count()})
