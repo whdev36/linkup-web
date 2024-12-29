@@ -66,4 +66,5 @@ def delete_account(req):
 
 # Account
 def account(req):
-	return HttpResponse('account')
+	account = get_object_or_404(Account, pk=req.user.pk)
+	return render(req, 'account/account.html', {'a': account})
