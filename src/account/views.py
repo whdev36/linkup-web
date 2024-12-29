@@ -68,3 +68,8 @@ def delete_account(req):
 def account(req):
 	account = get_object_or_404(Account, pk=req.user.pk)
 	return render(req, 'account/account.html', {'a': account})
+
+# Users
+def users(req):
+	users = Account.objects.exclude(id=req.user.id)
+	return render(req, 'account/users.html', {'users': users})

@@ -2,6 +2,17 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class Account(AbstractUser):
+	# Border color choices
+	BORDER_COLOR_CHOICE = [
+		('primary', 'Primary'),
+		('secondary', 'Secondary'),
+		('success', 'Success'),
+		('info', 'Info'),
+		('danger', 'Danger'),
+		('warning', 'Warning'),
+		('dark', 'Dark'),
+	]
+
 	class Meta:
 		verbose_name = 'Account'
 		verbose_name_plural = 'Accounts'
@@ -9,6 +20,8 @@ class Account(AbstractUser):
 	bio = models.TextField(max_length=300, blank=True, null=True)
 	is_private = models.BooleanField(default=True)
 	slug = models.SlugField(unique=True, blank=True, null=True)
+	follows = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='followers')
+	border_color = models.CharField(max_length=12, choices=BORDER_COLOR_CHOICE, default='secondary', blank=True, null=True)
 
 	def save(self, *args, **kwargs):
 		self.slug = self.slug or self.username
