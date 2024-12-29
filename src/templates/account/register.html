@@ -3,9 +3,17 @@
 {% block title %}Registration{% endblock %}
 
 {% block content %}
-	<form method="post">
-		{% csrf_token %}
-		{{ form.as_div }}
-		<button type="submit">Register</button>
-	</form>
+	<div class="row justify-content-center">
+		<div class="col-md-6 col-md-4">
+			<h2 class="text-center mb-4">Registration</h2>
+			<form method="post">
+				{% csrf_token %}
+				{{ form.as_div }}
+				<button class="btn btn-primary w-100" type="submit">Register</button>
+			</form>
+			<div class="text-center mt-3">
+				<p>Have an account? <a href="{% url 'login' %}">Login</a></p>
+			</div>
+		</div>
+	</div>
 {% endblock %}
