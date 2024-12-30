@@ -5,12 +5,20 @@
 {% load static %}
 
 {% block content %}
-	<div class="row justify-content-between">
+	<div class="row">
 		<!-- Profile section -->
-		<div class="col-lg-8 col-md-8 p-5 shadow border rounded mb-5">
-			<img class="rounded-circle d-block mx-auto border border-5 p-2 border-{{ a.border_color }}"
+		<div class="col-md-8 p-5 shadow border rounded">
+			<img class="mb-5 rounded-circle d-block mx-auto border border-5 p-2 border-{{ a.color }}"
 				src="{% if a.picture %}{{ a.picture.url }}{% else %}{% static 'img/default-pic.png' %}{% endif %}"
 				alt="{{ a.username }}" style="width: 30%;">
+			<div class="text-center">
+				{% if user in a.followers.all %}
+				    <a class="btn btn-{{ a.color }}" href="{% url 'unfollow' a.slug %}"><i class="bi bi-person-dash"></i> Unfollow</a>
+				{% else %}
+				    <a class="btn btn-{{ a.color }}" href="{% url 'follow' a.slug %}"><i class="bi bi-person-fill-add"></i> Follow</a>
+				{% endif %}
+				<a class="btn btn-{{ a.color }}" href=""><i class="bi bi-chat-fill"></i> Message</a>
+			</div>
 			<hr class="my-5">
 			<h2 class="text-center">{{ a.first_name }} {{ a.last_name }}</h2>
 			<p class="text-center text-muted"><i class="bi bi-person-fill"></i> @{{ a.username }}&nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-envelope-fill"></i> {{ a.email }}</p>
@@ -19,25 +27,11 @@
 			{% endif %}
 			<hr class="my-5">
 			<div class="row gap-3">
-				<div class="col text-center bg-light p-3 border rounded"><strong class="text-uppercase">Posts</strong><br>4</div>
-				<div class="col text-center bg-light p-3 border rounded"><strong class="text-uppercase">Followers</strong><br>1</div>
-				<div class="col text-center bg-light p-3 border rounded"><strong class="text-uppercase">Followings</strong><br>1</div>
+				<a href="#" class="col text-decoration-none text-muted text-center bg-light p-3 border rounded"><strong class="text-uppercase">Posts</strong><br>4</a>
+				<a href="#" class="col text-decoration-none text-muted text-center bg-light p-3 border rounded"><strong class="text-uppercase">Followers</strong><br>{{ followers_count }}</a>
+				<a href="#" class="col text-decoration-none text-muted text-center bg-light p-3 border rounded"><strong class="text-uppercase">Followings</strong><br>{{ following_count }}</a>
 			</div>
 		</div>
 		<!-- /Profile section -->
-		<!-- Post -->
-		<div class="col-lg-4 col-md-4">
-			<div class="px-3 py-5 shadow border rounded w-100">
-				<h2 class="text-center">Your posts</h2>
-				<hr class="my-5">
-				<li class="list-group list-group-flush">
-					<a class="list-group-item list-group-item-action" href="#">Post 1</a>
-					<a class="list-group-item list-group-item-action" href="#">Post 2</a>
-					<a class="list-group-item list-group-item-action" href="#">Post 3</a>
-					<a class="list-group-item list-group-item-action" href="#">Post 4</a>
-				</li>
-			</div>
-		</div>
-		<!-- /Post -->
 	</div>
 {% endblock %}

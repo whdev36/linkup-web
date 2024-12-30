@@ -30,7 +30,7 @@ class AccountChangeForm(UserChangeForm):
 	class Meta:
 		model = Account
 		fields = ['email', 'first_name', 'last_name', 'username',
-			'picture', 'border_color', 'is_private', 'bio']
+			'picture', 'color', 'is_private', 'bio']
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)

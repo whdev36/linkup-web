@@ -4,6 +4,7 @@ from .forms import AccountForm, AccountChangeForm
 from django.contrib.auth import login, logout, authenticate
 from .models import Account
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Register user
 def register_account(req):
@@ -65,11 +66,43 @@ def delete_account(req):
 	return HttpResponse('delete')
 
 # Account
-def account(req):
+def my_account(req):
 	account = get_object_or_404(Account, pk=req.user.pk)
-	return render(req, 'account/account.html', {'a': account})
+	followers_count = account.followers.count()
+	following_count = account.follows.count()
+	return render(req, 'account/account.html',
+		{'a': account, 'followers_count': followers_count, 'following_count': following_count})
 
 # Users
 def users(req):
 	users = Account.objects.exclude(id=req.user.id)
 	return render(req, 'account/users.html', {'users': users})
+
+# Follow user
+@login_required
+def follow_user(req, slug):
+	user = get_object_or_404(Account, slug=slug)
+	if user == req.user:
+		messages.error(req, 'You cannot follow yourself.')
+		return redirect('view-account', slug=slug)
+	req.user.follows.add(user)
+	messages.success(req, f"You are now following {user.username}.")
+	return redirect('view-account', slug=slug)
+
+# Unfollow user
+@login_required
+def unfollow_user(req, slug):
+	user = get_object_or_404(Account, slug=slug)
+	if user == req.user:
+		messages.error(req, 'You cannot unfollow yourself.')
+	req.user.follows.remove(user)
+	messages.success(req, f"You have unfollowed {user.username}.")
+	return redirect('view-account', slug=slug)
+
+# View user
+def view_account(req, slug):
+	account = get_object_or_404(Account, slug=slug)
+	followers_count = account.followers.count()
+	following_count = account.follows.count()
+	return render(req, 'account/account.html',
+		{'a': account, 'followers_count': followers_count, 'following_count': following_count})
